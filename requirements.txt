@@ -1,4 +1,2 @@
 requests
-pandas==2.2.2
 feedparser
-numpy
