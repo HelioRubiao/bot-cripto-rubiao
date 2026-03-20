@@ -1,6 +1,5 @@
 import requests
 import time
-import pandas as pd
 import feedparser
 
 import os
