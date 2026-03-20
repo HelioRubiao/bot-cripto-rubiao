@@ -40,7 +40,7 @@ def calcular_rsi(precos, periodo=14):
     rsi = 100 - (100 / (1 + rs))
 
     return rsi.iloc[-1]
-
+    
 def enviar_noticia():
     global ultima_noticia
 
