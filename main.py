@@ -41,6 +41,8 @@ def calcular_rsi(precos, periodo=14):
     return rsi.iloc[-1]
     
 def enviar_noticia():
+    print("TESTE NOTICIA")
+    print(feed.entries)
     global ultima_noticia
 
     feed = feedparser.parse("https://www.coindesk.com/arc/outboundfeeds/rss/")
