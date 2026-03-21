@@ -109,7 +109,7 @@ while True:
                 f"\n\n💎 Quer sinais mais precisos? Em breve grupo VIP."
 )
     # notícia a cada 30 minutos
-    if time.time() - ultimo_envio_noticia > 1800:
+    if time.time() - ultimo_envio_noticia > 60:
         enviar_noticia()
         ultimo_envio_noticia = time.time()
 
