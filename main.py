@@ -83,22 +83,22 @@ while True:
         rsi = calcular_rsi(historico_precos[moeda])
 
         if rsi is None:
-    continue
+            continue
 
-if rsi < 30:
-    enviar_telegram(
-        f"🟢 OPORTUNIDADE DE COMPRA\n\n"
-        f"{moeda.upper()}\n"
-        f"Preço: {preco}\n"
-        f"RSI: {rsi:.2f}"
+        if rsi < 30:
+            enviar_telegram(
+                f"🟢 OPORTUNIDADE DE COMPRA\n\n"
+                f"{moeda.upper()}\n"
+                f"Preço: {preco}\n"
+                f"RSI: {rsi:.2f}"
     )
 
-elif rsi > 70:
-    enviar_telegram(
-        f"🔴 POSSÍVEL REALIZAÇÃO\n\n"
-        f"{moeda.upper()}\n"
-        f"Preço: {preco}\n"
-        f"RSI: {rsi:.2f}"
+        elif rsi > 70:
+            enviar_telegram(
+                f"🔴 POSSÍVEL REALIZAÇÃO\n\n"
+                f"{moeda.upper()}\n"
+                f"Preço: {preco}\n"
+                f"RSI: {rsi:.2f}"
     )
     # notícia a cada 30 minutos
     if time.time() - ultimo_envio_noticia > 1800:
