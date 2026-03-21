@@ -87,19 +87,27 @@ while True:
 
         if rsi < 30:
             enviar_telegram(
-                f"🟢 OPORTUNIDADE DE COMPRA\n\n"
-                f"{moeda.upper()}\n"
-                f"Preço: {preco}\n"
-                f"RSI: {rsi:.2f}"
-    )
+                f"📊 ALERTA CRIPTO\n\n"
+                f"🪙 Moeda: {moeda.upper()}\n"
+                f"💰 Preço: {preco}\n"
+                f"📉 RSI: {rsi:.2f}\n\n"
+                f"🟢 POSSÍVEL OPORTUNIDADE DE COMPRA\n\n"
+                f"⚠️ Mercado pode estar sobrevendido\n"
+                f"👀 Acompanhe os próximos movimentos"
+                f"\n\n💎 Quer sinais mais precisos? Em breve grupo VIP."
+)
 
         elif rsi > 70:
             enviar_telegram(
+                f"📊 ALERTA CRIPTO\n\n"
+                f"🪙 Moeda: {moeda.upper()}\n"
+                f"💰 Preço: {preco}\n"
+                f"📈 RSI: {rsi:.2f}\n\n"
                 f"🔴 POSSÍVEL REALIZAÇÃO\n\n"
-                f"{moeda.upper()}\n"
-                f"Preço: {preco}\n"
-                f"RSI: {rsi:.2f}"
-    )
+                f"⚠️ Mercado pode estar sobrecomprado\n"
+                f"👀 Atenção a correções"
+                f"\n\n💎 Quer sinais mais precisos? Em breve grupo VIP."
+)
     # notícia a cada 30 minutos
     if time.time() - ultimo_envio_noticia > 1800:
         enviar_noticia()
