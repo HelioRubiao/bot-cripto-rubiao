@@ -62,6 +62,7 @@ def enviar_noticia():
     )
 
     enviar_telegram(msg)
+enviar_noticia()
 
 while True:
 
