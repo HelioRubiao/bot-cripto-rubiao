@@ -62,7 +62,7 @@ def enviar_noticia():
     )
 
     enviar_telegram(msg)
-
+enviar_telegram("🚀 Bot iniciado com sucesso no Railway!")
 while True:
 
     ids = ",".join(moedas.keys())
