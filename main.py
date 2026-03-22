@@ -77,7 +77,11 @@ while True:
 
     for moeda, moeda_vs in moedas.items():
 
-        preco = data[moeda][moeda_vs]
+        if moeda in data and moeda_vs in data[moeda]:
+            preco = data[moeda][moeda_vs]
+        else:
+            print(f"Erro ao pegar preço de {moeda}")
+            continue
 
         historico_precos[moeda].append(preco)
 
