@@ -39,20 +39,20 @@ def calcular_rsi(precos, periodo=14):
     rsi = 100 - (100 / (1 + rs))
 
     return rsi.iloc[-1]
-    
+
 def enviar_noticia():
-    print("TESTE NOTICIA")
-    print(feed.entries)
     global ultima_noticia
 
     feed = feedparser.parse("https://www.coindesk.com/arc/outboundfeeds/rss/")
 
     if len(feed.entries) == 0:
+        print("Sem notícias")
         return
 
     noticia = feed.entries[0]
 
     if noticia.title == ultima_noticia:
+        print("Notícia repetida")
         return
 
     ultima_noticia = noticia.title
@@ -63,6 +63,7 @@ def enviar_noticia():
         f"{noticia.link}"
     )
 
+    print("Enviando notícia...")
     enviar_telegram(msg)
 enviar_noticia()
 
