@@ -43,7 +43,7 @@ def calcular_rsi(precos, periodo=14):
 def enviar_noticia():
     global ultima_noticia
 
-    feed = feedparser.parse("https://www.coindesk.com/arc/outboundfeeds/rss/")
+    feed = feedparser.parse("https://cointelegraph.com/rss")
 
     if len(feed.entries) == 0:
         print("Sem notícias")
