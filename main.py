@@ -43,7 +43,16 @@ def calcular_rsi(precos, periodo=14):
 def enviar_noticia():
     global ultima_noticia
 
-    feed = feedparser.parse("https://cointelegraph.com/rss")
+    import random
+
+    feeds = [
+        "https://portaldobitcoin.uol.com.br/feed/",
+        "https://livecoins.com.br/feed/",
+        "https://cointelegraph.com.br/rss"
+    ]
+
+    feed_url = random.choice(feeds)
+    feed = feedparser.parse(feed_url)
 
     if len(feed.entries) == 0:
         print("Sem notícias")
@@ -58,7 +67,7 @@ def enviar_noticia():
     ultima_noticia = noticia.title
 
     msg = (
-        "📰 NOTÍCIA CRIPTO\n\n"
+        "📰 NOTÍCIA CRIPTO (BR)\n\n"
         f"{noticia.title}\n\n"
         f"{noticia.link}"
     )
@@ -117,7 +126,7 @@ while True:
                 f"\n\n💎 Quer sinais mais precisos? Em breve grupo VIP."
 )
     # notícia a cada 30 minutos
-    if time.time() - ultimo_envio_noticia > 60:
+    if time.time() - ultimo_envio_noticia > 300:
         enviar_noticia()
         ultimo_envio_noticia = time.time()
 
