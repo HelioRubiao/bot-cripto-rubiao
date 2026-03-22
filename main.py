@@ -126,6 +126,7 @@ while True:
                 f"👀 Atenção a correções"
                 f"\n\n💎 Quer sinais mais precisos? Em breve grupo VIP."
 )
+            enviar_telegram("🚀 TESTE GRUPO ATIVO")
     # notícia a cada 30 minutos
     if time.time() - ultimo_envio_noticia > 300:
         enviar_noticia()
