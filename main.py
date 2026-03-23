@@ -74,7 +74,7 @@ def enviar_noticia():
 
     print("Enviando notícia...")
     enviar_telegram(msg)
-    enviar_telegram("🚀 TESTE FINAL GRUPO")
+    enviar_telegram("🚀 💎 Em breve: sinais completos no grupo VIP")
 "\n\n💎 Em breve: sinais completos no grupo VIP"
 enviar_noticia()
 
