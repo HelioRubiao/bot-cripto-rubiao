@@ -85,8 +85,20 @@ while True:
     ids = ",".join(moedas.keys())
     vs = ",".join(set(moedas.values()))
 
-    url = f"https://api.coingecko.com/api/v3/simple/price?ids={ids}&vs_currencies={vs}"
-    data = requests.get(url).json()
+    try:
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        print("Erro na API:", response.status_code)
+        time.sleep(10)
+        continue
+
+    data = response.json()
+
+except Exception as e:
+    print("Erro ao pegar dados:", e)
+    time.sleep(10)
+    continue
 
     for moeda, moeda_vs in moedas.items():
 
