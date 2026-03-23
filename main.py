@@ -92,14 +92,14 @@ try:
     if response.status_code != 200:
         print("Erro na API:", response.status_code)
         time.sleep(10)
-        continue
+            continue
 
     data = response.json()
 
 except Exception as e:
     print("Erro ao pegar dados:", e)
     time.sleep(10)
-    continue
+            continue
 
     for moeda, moeda_vs in moedas.items():
 
