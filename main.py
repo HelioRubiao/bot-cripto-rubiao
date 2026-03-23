@@ -86,12 +86,11 @@ while True:
     ids = ",".join(moedas.keys())
     vs = ",".join(set(moedas.values()))
 
-    
-        try:
-            response = requests.get(url)
+try:
+    response = requests.get(url)
 
-            if response.status_code != 200:
-                print("Erro na API:",           response.status_code)
+    if response.status_code != 200:
+        print("Erro na API:", response.status_code)
         time.sleep(10)
         continue
 
@@ -101,6 +100,7 @@ except Exception as e:
     print("Erro ao pegar dados:", e)
     time.sleep(10)
     continue
+
     for moeda, moeda_vs in moedas.items():
 
         if moeda in data and moeda_vs in data[moeda]:
