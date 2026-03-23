@@ -17,7 +17,9 @@ moedas = {
     "ethereum": "usd",
     "litecoin": "usd",
     "binancecoin": "usd",
-    "tether": "brl"
+    "tether": "brl",
+    "ripple": "usd",      # XRP
+    "solana": "usd"       # SOL
 }
 
 historico_precos = {moeda: [] for moeda in moedas}
@@ -74,7 +76,7 @@ def enviar_noticia():
 
     print("Enviando notícia...")
     enviar_telegram(msg)
-    enviar_telegram("🚀 💎 Em breve: sinais completos no grupo VIP")
+    enviar_telegram("🚀 💎 Em breve: sinais completos no grupo VIP / "📊 Monitorando mercado em tempo real..."")
 "\n\n💎 Em breve: sinais completos no grupo VIP"
 enviar_noticia()
 
@@ -104,7 +106,7 @@ while True:
         if rsi is None:
             continue
 
-        if rsi < 40:
+        if rsi < 45:
             enviar_telegram(
                 f"📊 ALERTA CRIPTO\n\n"
                 f"🪙 Moeda: {moeda.upper()}\n"
