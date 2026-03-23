@@ -104,7 +104,7 @@ while True:
         if rsi is None:
             continue
 
-        if rsi < 30:
+        if rsi < 40:
             enviar_telegram(
                 f"📊 ALERTA CRIPTO\n\n"
                 f"🪙 Moeda: {moeda.upper()}\n"
@@ -116,7 +116,7 @@ while True:
                 f"\n\n💎 Quer sinais mais precisos? Em breve grupo VIP."
 )
 
-        elif rsi > 70:
+        elif rsi > 50:
             enviar_telegram(
                 f"📊 ALERTA CRIPTO\n\n"
                 f"🪙 Moeda: {moeda.upper()}\n"
