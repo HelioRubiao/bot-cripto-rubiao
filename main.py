@@ -129,7 +129,7 @@ while True:
 )
             enviar_telegram("🚀 TESTE GRUPO ATIVO")
     # notícia a cada 30 minutos
-    if time.time() - ultimo_envio_noticia > 300:
+    if time.time() - ultimo_envio_noticia > 1000:
         enviar_noticia()
         ultimo_envio_noticia = time.time()
 
