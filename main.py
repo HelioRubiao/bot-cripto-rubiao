@@ -1,6 +1,8 @@
 import requests
 import time
 
+import os
+
 TOKEN = os.getenv("TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
@@ -64,9 +66,9 @@ while True:
 
                 elif rsi > 55:
                     enviar_telegram(f"🔴 VENDA {simbolo}\nPreço: {preco}\nRSI: {rsi:.2f}")
-
+        enviar_telegram("🚀 Bot online!")
         time.sleep(60)
 
     except Exception as e:
-        print("Erro:", e)
+        print("Erro:", e)        
         time.sleep(10)
