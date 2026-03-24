@@ -93,9 +93,9 @@ while True:
         response = requests.get(url)
 
         if response.status_code == 429:
-    print("Rate limit atingido... aguardando")
-    time.sleep(120)
-    continue
+            print("Rate limit atingido... aguardando")
+            time.sleep(120)
+            continue
 
 elif response.status_code != 200:
       print("Erro na API:", response.status_code)
