@@ -7,13 +7,13 @@ TOKEN = os.getenv("TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
 MOEDAS = {    
-    "bitcoin": "usd",
-    "ethereum": "usd",
-    "litecoin": "usd",
-    "binancecoin": "usd",
-    "tether": "brl",
-    "ripple": "usd",      # XRP
-    "solana": "usd"       # SOL
+    "bitcoin": "BTC",
+    "ethereum": "ETH",
+    "litecoin": "LTC",
+    "binancecoin": "BNB",
+    "tether": "USDT",
+    "ripple": "XRP",      # XRP
+    "solana": "SOL"       # SOL
 }
 
 def get_price(coin):
@@ -61,12 +61,13 @@ while True:
             rsi = calcular_rsi(historico[coin])
 
             if rsi:
-                if rsi < 45:
-                    enviar_telegram(f"🟢 COMPRA {simbolo}\nPreço: {preco}\nRSI: {rsi:.2f}")
-
-                elif rsi > 55:
-                    enviar_telegram(f"🔴 VENDA {simbolo}\nPreço: {preco}\nRSI: {rsi:.2f}")
-        
+                if rsi < 35:
+                    enviar_telegram(
+                        f"{'🟢 COMPRA' if sinal=='COMPRA' else '🔴 VENDA'}\n"
+                        f"Moeda: {simbolo} ({coin.upper()})\n"
+                        f"Preço: ${preco}\n"
+                        f"RSI: {rsi:.2f}"
+)        
         time.sleep(60)
 
     except Exception as e:
