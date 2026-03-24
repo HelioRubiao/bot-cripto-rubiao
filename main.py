@@ -90,30 +90,14 @@ while True:
     url = f"https://api.coingecko.com/api/v3/simple/price?ids={ids}&vs_currencies={vs}"
 
     try:
-    response = requests.get(url)
+        response = requests.get(url)
 
-    if response.status_code == 429:
-        print("Rate limit atingido... aguardando")
-        time.sleep(120)
-        continue
+        if response.status_code == 429:
+            print("Rate limit atingido... aguardando")
+            time.sleep(120)
+            continue
 
-    elif response.status_code != 200:
-        print("Erro na API:", response.status_code)
-        time.sleep(10)
-        continue
-
-    data = response.json()
-
-except Exception as e:
-    print("Erro ao pegar dados:", e)
-    time.sleep(10)
-    continue
-
-TOKEN = os.getenv("TOKEN")
-CHAT_ID = os.getenv("CHAT_ID")
-
-def enviar_telegram(msg):
-    url =
+        elif response.status_code != 200:
             print("Erro na API:", response.status_code)
             time.sleep(10)
             continue
@@ -132,7 +116,6 @@ def enviar_telegram(msg):
         else:
             print(f"Erro ao pegar preço de {moeda}")
             continue
-   
 
         historico_precos[moeda].append(preco)
 
@@ -144,34 +127,15 @@ def enviar_telegram(msg):
         if rsi is None:
             continue
 
-        if rsi < 30:
-            enviar_telegram(
-                f"📊 ALERTA CRIPTO\n\n"
-                f"🪙 Moeda: {moeda.upper()}\n"
-                f"💰 Preço: {preco}\n"
-                f"📉 RSI: {rsi:.2f}\n\n"
-                f"🟢 POSSÍVEL OPORTUNIDADE DE COMPRA\n\n"
-                f"⚠️ Mercado pode estar sobrevendido\n"
-                f"👀 Acompanhe os próximos movimentos"
-                f"\n\n💎 Quer sinais mais precisos? Em breve grupo VIP."
-)
+        if rsi < 45:
+            enviar_telegram(f"🟢 COMPRA {moeda.upper()} | RSI: {rsi:.2f} | Preço: {preco}")
 
-        elif rsi > 70:
-            enviar_telegram(
-                f"📊 ALERTA CRIPTO\n\n"
-                f"🪙 Moeda: {moeda.upper()}\n"
-                f"💰 Preço: {preco}\n"
-                f"📈 RSI: {rsi:.2f}\n\n"
-                f"🔴 POSSÍVEL REALIZAÇÃO\n\n"
-                f"⚠️ Mercado pode estar sobrecomprado\n"
-                f"👀 Atenção a correções"
-                f"\n\n💎 Quer sinais mais precisos? Em breve grupo VIP."
-)
-            enviar_telegram("🚀 TESTE GRUPO ATIVO")
-    
-# notícia a cada 30 minutos
-if True:
-    enviar_noticia()
-    ultimo_envio_noticia = time.time()
+        elif rsi > 50:
+            enviar_telegram(f"🔴 VENDA {moeda.upper()} | RSI: {rsi:.2f} | Preço: {preco}")
+
+    # notícias
+    if time.time() - ultimo_envio_noticia > 1800:
+        enviar_noticia()
+        ultimo_envio_noticia = time.time()
 
     time.sleep(60)
