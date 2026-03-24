@@ -42,45 +42,30 @@ def calcular_rsi(precos, periodo=14):
     rsi = 100 - (100 / (1 + rs))
 
     return rsi.iloc[-1]
-
 def enviar_noticia():
     global ultima_noticia
 
-    import random
-
-    feeds = [
-        "https://portaldobitcoin.uol.com.br/feed/",
-        "https://livecoins.com.br/feed/",
-        "https://cointelegraph.com.br/rss"
-    ]
-
-    feed_url = random.choice(feeds)
-    feed = feedparser.parse(feed_url)
+    feed = feedparser.parse("URL_DO_FEED")
 
     if len(feed.entries) == 0:
-        print("Sem notícias")
         return
 
     noticia = feed.entries[0]
 
     if noticia.title == ultima_noticia:
-        print("Notícia repetida")
         return
 
     ultima_noticia = noticia.title
 
     msg = (
-        "📰 NOTÍCIA CRIPTO (BR)\n\n"
+        "📰 NOTÍCIA CRIPTO\n\n"
         f"{noticia.title}\n\n"
-        f"{noticia.link}"
+        f"{noticia.link}\n\n"
+        "🚀 💎 Em breve: sinais completos no grupo VIP"
     )
 
-    print("Enviando notícia...")
-    enviar_telegram(
-    "🚀 💎 Em breve: sinais completos no grupo VIP\n"
-    "📊 Monitorando mercado em tempo real..."
-)
-enviar_noticia()
+    enviar_telegram(msg)
+
 
 while True:
 
