@@ -110,13 +110,7 @@ while True:
         else:
             print(f"Erro ao pegar preço de {moeda}")
             continue
-    for moeda, moeda_vs in moedas.items():
-
-        if moeda in data and moeda_vs in data[moeda]:
-            preco = data[moeda][moeda_vs]
-        else:
-            print(f"Erro ao pegar preço de {moeda}")
-            continue
+   
 
         historico_precos[moeda].append(preco)
 
@@ -152,9 +146,10 @@ while True:
                 f"\n\n💎 Quer sinais mais precisos? Em breve grupo VIP."
 )
             enviar_telegram("🚀 TESTE GRUPO ATIVO")
-    # notícia a cada 30 minutos
-    if time.time() - ultimo_envio_noticia > 1000:
-        enviar_noticia()
-        ultimo_envio_noticia = time.time()
+    
+# notícia a cada 30 minutos
+if time.time() - ultimo_envio_noticia > 1800:
+    enviar_noticia()
+    ultimo_envio_noticia = time.time()
 
     time.sleep(60)
