@@ -1,19 +1,10 @@
 import requests
 import time
-import feedparser
-
-
-import os
 
 TOKEN = os.getenv("TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
 
-def enviar_telegram(msg):
-    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-    data = {"chat_id": CHAT_ID, "text": msg}
-    requests.post(url, data=data)
-
-moedas = {
+MOEDAS = {    
     "bitcoin": "usd",
     "ethereum": "usd",
     "litecoin": "usd",
@@ -23,105 +14,59 @@ moedas = {
     "solana": "usd"       # SOL
 }
 
-historico_precos = {moeda: [] for moeda in moedas}
-
-ultima_noticia = ""
-ultimo_envio_noticia = 0
+def get_price(coin):
+    url = f"https://api.coingecko.com/api/v3/simple/price?ids={coin}&vs_currencies=usd"
+    data = requests.get(url).json()
+    return data[coin]["usd"]
 
 def calcular_rsi(precos, periodo=14):
     if len(precos) < periodo:
         return None
 
-    series = pd.Series(precos)
-    delta = series.diff()
+    ganhos = []
+    perdas = []
 
-    ganho = (delta.where(delta > 0, 0)).rolling(window=periodo).mean()
-    perda = (-delta.where(delta < 0, 0)).rolling(window=periodo).mean()
+    for i in range(1, len(precos)):
+        diff = precos[i] - precos[i-1]
+        if diff >= 0:
+            ganhos.append(diff)
+        else:
+            perdas.append(abs(diff))
 
-    rs = ganho / perda
+    media_ganho = sum(ganhos[-periodo:]) / periodo if ganhos else 0
+    media_perda = sum(perdas[-periodo:]) / periodo if perdas else 1
+
+    rs = media_ganho / media_perda
     rsi = 100 - (100 / (1 + rs))
 
-    return rsi.iloc[-1]
+    return rsi
 
-def enviar_noticia():
-    global ultima_noticia
+def enviar_telegram(msg):
+    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    requests.post(url, data={"chat_id": CHAT_ID, "text": msg})
 
-    feed =    feedparser.parse("URL_DO_FEED")
-
-    if len(feed.entries) == 0:
-        return
-
-    noticia = feed.entries[0]
-
-    if noticia.title == ultima_noticia:
-        return
-
-    ultima_noticia = noticia.title
-
-    msg = (
-        "📰 NOTÍCIA CRIPTO\n\n"
-        f"{noticia.title}\n\n"
-        f"{noticia.link}\n\n"
-        "🚀 💎 Em breve: sinais completos no grupo VIP"
-    )
-
-    enviar_telegram(msg)
-
+historico = {coin: [] for coin in MOEDAS}
 
 while True:
-
-    ids = ",".join(moedas.keys())
-    vs = ",".join(set(moedas.values()))
-
-    url = f"https://api.coingecko.com/api/v3/simple/price?ids={ids}&vs_currencies={vs}"
-
     try:
-        response = requests.get(url)
+        for coin, simbolo in MOEDAS.items():
+            preco = get_price(coin)
+            historico[coin].append(preco)
 
-        if response.status_code == 429:
-            print("Rate limit atingido... aguardando")
-            time.sleep(120)
-            continue
+            if len(historico[coin]) > 50:
+                historico[coin].pop(0)
 
-        elif response.status_code != 200:
-            print("Erro na API:", response.status_code)
-            time.sleep(10)
-            continue
+            rsi = calcular_rsi(historico[coin])
 
-        data = response.json()
+            if rsi:
+                if rsi < 45:
+                    enviar_telegram(f"🟢 COMPRA {simbolo}\nPreço: {preco}\nRSI: {rsi:.2f}")
+
+                elif rsi > 55:
+                    enviar_telegram(f"🔴 VENDA {simbolo}\nPreço: {preco}\nRSI: {rsi:.2f}")
+
+        time.sleep(60)
 
     except Exception as e:
-        print("Erro ao pegar dados:", e)
+        print("Erro:", e)
         time.sleep(10)
-        continue
-
-    for moeda, moeda_vs in moedas.items():
-
-        if moeda in data and moeda_vs in data[moeda]:
-            preco = data[moeda][moeda_vs]
-        else:
-            print(f"Erro ao pegar preço de {moeda}")
-            continue
-
-        historico_precos[moeda].append(preco)
-
-        if len(historico_precos[moeda]) > 50:
-            historico_precos[moeda].pop(0)
-
-        rsi = calcular_rsi(historico_precos[moeda])
-
-        if rsi is None:
-            continue
-
-        if rsi < 45:
-            enviar_telegram(f"🟢 COMPRA {moeda.upper()} | RSI: {rsi:.2f} | Preço: {preco}")
-
-        elif rsi > 50:
-            enviar_telegram(f"🔴 VENDA {moeda.upper()} | RSI: {rsi:.2f} | Preço: {preco}")
-
-    # notícias
-    if time.time() - ultimo_envio_noticia > 1800:
-        enviar_noticia()
-        ultimo_envio_noticia = time.time()
-
-    time.sleep(60)
