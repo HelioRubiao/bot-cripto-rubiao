@@ -48,7 +48,7 @@ def enviar_telegram(msg):
     requests.post(url, data={"chat_id": CHAT_ID, "text": msg})
 
 historico = {coin: [] for coin in MOEDAS}
-
+enviar_telegram("🚀 Bot online!")
 while True:
     try:
         for coin, simbolo in MOEDAS.items():
@@ -66,7 +66,7 @@ while True:
 
                 elif rsi > 55:
                     enviar_telegram(f"🔴 VENDA {simbolo}\nPreço: {preco}\nRSI: {rsi:.2f}")
-        enviar_telegram("🚀 Bot online!")
+        
         time.sleep(60)
 
     except Exception as e:
