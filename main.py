@@ -1,6 +1,7 @@
 import requests
 import time
 import feedparser
+import pandas as pd
 
 import os
 
@@ -91,7 +92,21 @@ while True:
     try:
         response = requests.get(url)
 
-        if response.status_code != 200:
+        if response.status_code == 429:
+    print("Rate limit atingido... aguardando")
+    time.sleep(120)
+    continue
+
+elif response.status_code != 200:
+    print("Erro na API:", response.status_code)
+    time.sleep(10)
+    continue
+
+TOKEN = os.getenv("TOKEN")
+CHAT_ID = os.getenv("CHAT_ID")
+
+def enviar_telegram(msg):
+    url =
             print("Erro na API:", response.status_code)
             time.sleep(10)
             continue
@@ -122,7 +137,7 @@ while True:
         if rsi is None:
             continue
 
-        if rsi < 45:
+        if rsi < 30:
             enviar_telegram(
                 f"📊 ALERTA CRIPTO\n\n"
                 f"🪙 Moeda: {moeda.upper()}\n"
@@ -134,7 +149,7 @@ while True:
                 f"\n\n💎 Quer sinais mais precisos? Em breve grupo VIP."
 )
 
-        elif rsi > 50:
+        elif rsi > 70:
             enviar_telegram(
                 f"📊 ALERTA CRIPTO\n\n"
                 f"🪙 Moeda: {moeda.upper()}\n"
