@@ -98,9 +98,9 @@ while True:
     continue
 
 elif response.status_code != 200:
-    print("Erro na API:", response.status_code)
-    time.sleep(10)
-    continue
+      print("Erro na API:", response.status_code)
+      time.sleep(10)
+      continue
 
 TOKEN = os.getenv("TOKEN")
 CHAT_ID = os.getenv("CHAT_ID")
