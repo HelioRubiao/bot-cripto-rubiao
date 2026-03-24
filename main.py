@@ -90,15 +90,22 @@ while True:
     url = f"https://api.coingecko.com/api/v3/simple/price?ids={ids}&vs_currencies={vs}"
 
     try:
-        response = requests.get(url)
+    response = requests.get(url)
 
-        if response.status_code == 429:
-            print("Rate limit atingido... aguardando")
-            time.sleep(120)
-            continue
+    if response.status_code == 429:
+        print("Rate limit atingido... aguardando")
+        time.sleep(120)
+        continue
 
-elif response.status_code != 200:
-    print("Erro na API:", response.status_code)
+    elif response.status_code != 200:
+        print("Erro na API:", response.status_code)
+        time.sleep(10)
+        continue
+
+    data = response.json()
+
+except Exception as e:
+    print("Erro ao pegar dados:", e)
     time.sleep(10)
     continue
 
