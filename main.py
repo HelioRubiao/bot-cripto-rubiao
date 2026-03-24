@@ -163,7 +163,7 @@ def enviar_telegram(msg):
             enviar_telegram("🚀 TESTE GRUPO ATIVO")
     
 # notícia a cada 30 minutos
-if time.time() - ultimo_envio_noticia > 1800:
+if True:
     enviar_noticia()
     ultimo_envio_noticia = time.time()
 
