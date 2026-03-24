@@ -42,10 +42,11 @@ def calcular_rsi(precos, periodo=14):
     rsi = 100 - (100 / (1 + rs))
 
     return rsi.iloc[-1]
+
 def enviar_noticia():
     global ultima_noticia
 
-    feed = feedparser.parse("URL_DO_FEED")
+    feed =    feedparser.parse("URL_DO_FEED")
 
     if len(feed.entries) == 0:
         return
