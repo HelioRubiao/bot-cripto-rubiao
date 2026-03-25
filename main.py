@@ -53,7 +53,6 @@ def enviar_vip(msg):
     requests.post(url, data={"chat_id": CHAT_ID_V1, "text": msg})
 
 historico = {coin: [] for coin in MOEDAS}
-enviar_telegram("🚀 Bot online!")
 enviar_free("🟢 Free funcionando")
 enviar_vip("🔒 VIP funcionando")
 
