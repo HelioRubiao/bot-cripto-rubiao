@@ -49,6 +49,9 @@ def enviar_telegram(msg):
 
 historico = {coin: [] for coin in MOEDAS}
 enviar_telegram("🚀 Bot online!")
+
+ultima_noticia = 0
+
 while True:
     try:
         for coin, simbolo in MOEDAS.items():
@@ -68,6 +71,11 @@ while True:
                         f"Preço: ${preco}\n"
                         f"RSI: {rsi:.2f}"
 )        
+agora = time.time()
+
+if agora - ultima_noticia > 1800:  # 30 minutos
+    enviar_telegram("📰 Atualização do mercado em breve...")
+    ultima_noticia = agora
         time.sleep(60)
 
     except Exception as e:
