@@ -5,7 +5,7 @@ import os
 
 TOKEN = os.getenv("TOKEN")
 CHAT_ID_FREE = os.getenv("CHAT_ID_FREE")
-CHAT_ID_VIP = os.getenv("CHAT_ID_V1")
+CHAT_ID_V1 = os.getenv("CHAT_ID_V1")
 
 MOEDAS = {    
     "bitcoin": "BTC",
@@ -48,13 +48,13 @@ def enviar_free(msg):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     requests.post(url, data={"chat_id": CHAT_ID_FREE, "text": msg})
 
-def enviar_vip(msg):
+def enviar_v1(msg):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     requests.post(url, data={"chat_id": CHAT_ID_V1, "text": msg})
 
 historico = {coin: [] for coin in MOEDAS}
 enviar_free("🟢 Free funcionando")
-enviar_vip("🔒 VIP funcionando")
+enviar_v1("🔒 VIP funcionando")
 
 ultima_noticia = 0
 
