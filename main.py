@@ -97,7 +97,7 @@ while True:
             historico[coin].append(preco)
 
             if len(historico[coin]) > 50:
-            historico[coin].pop(0)
+                historico[coin].pop(0)
 
             rsi = calcular_rsi(historico[coin])
 
