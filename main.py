@@ -62,7 +62,10 @@ def enviar_v1(msg):
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     requests.post(url, data={"chat_id": CHAT_ID_V1, "text": msg})
 
-historico = {coin: [] for coin in MOEDAS}
+historico = {}
+
+for coin in set(list(MOEDAS_FREE.keys()) + list(MOEDAS_V1.keys())):
+    historico[coin] = []
 enviar_free("🟢 Free funcionando")
 enviar_v1("🔒 VIP funcionando")
 
