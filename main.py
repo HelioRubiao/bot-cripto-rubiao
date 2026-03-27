@@ -73,6 +73,7 @@ ultima_noticia = 0
 
 while True:
     try:
+        #free
         for coin, simbolo in MOEDAS_FREE.items():
             preco = get_price(coin)
             historico[coin].append(preco)
@@ -89,7 +90,24 @@ while True:
                         f"Moeda: {simbolo} ({coin.upper()})\n"
                         f"Preço: ${preco}\n"
                         f"RSI: {rsi:.2f}"
-)        
+)
+                    #V1
+        for coin, simbolo in MOEDAS_V1.items():
+            preco = get_price(coin)
+            historico[coin].append(preco)
+
+            if len(historico[coin]) > 50:
+            historico[coin].pop(0)
+
+            rsi = calcular_rsi(historico[coin])
+
+            if rsi:
+                if rsi < 35:
+                    enviar_v1(
+                    f"🔥 COMPRA VIP {simbolo}\n"
+                    f"Preço: ${preco}\n"
+                    f"RSI: {rsi:.2f}"
+            )
                     
         agora = time.time()
 
