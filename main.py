@@ -7,16 +7,26 @@ TOKEN = os.getenv("TOKEN")
 CHAT_ID_FREE = os.getenv("CHAT_ID_FREE")
 CHAT_ID_V1 = os.getenv("CHAT_ID_V1")
 
-MOEDAS = {    
+MOEDAS_FREE = {
     "bitcoin": "BTC",
     "ethereum": "ETH",
-    "litecoin": "LTC",
-    "binancecoin": "BNB",
-    "tether": "USDT",
-    "ripple": "XRP",      # XRP
-    "solana": "SOL"       # SOL
+    "solana": "SOL",
+    "ripple": "XRP",
+    "litecoin": "LTC"
 }
 
+MOEDAS_V1 = {
+    "bitcoin": "BTC",
+    "ethereum": "ETH",
+    "solana": "SOL",
+    "ripple": "XRP",
+    "litecoin": "LTC",
+    "binancecoin": "BNB",
+    "cardano": "ADA",
+    "dogecoin": "DOGE",
+    "tron": "TRX",
+    "avalanche-2": "AVAX"
+}
 def get_price(coin):
     url = f"https://api.coingecko.com/api/v3/simple/price?ids={coin}&vs_currencies=usd"
     data = requests.get(url).json()
@@ -60,7 +70,7 @@ ultima_noticia = 0
 
 while True:
     try:
-        for coin, simbolo in MOEDAS.items():
+        for coin, simbolo in MOEDAS_FREE.items():
             preco = get_price(coin)
             historico[coin].append(preco)
 
@@ -71,7 +81,7 @@ while True:
 
             if rsi:
                 if rsi < 35:
-                    enviar_telegram(
+                    enviar_free(
                         f"{'🟢 COMPRA' if sinal=='COMPRA' else '🔴 VENDA'}\n"
                         f"Moeda: {simbolo} ({coin.upper()})\n"
                         f"Preço: ${preco}\n"
