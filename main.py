@@ -12,7 +12,8 @@ MOEDAS_FREE = {
     "ethereum": "ETH",
     "solana": "SOL",
     "ripple": "XRP",
-    "litecoin": "LTC"
+    "litecoin": "LTC",
+    "saga "SAGA"
 }
 
 MOEDAS_V1 = {
@@ -25,7 +26,8 @@ MOEDAS_V1 = {
     "cardano": "ADA",
     "dogecoin": "DOGE",
     "tron": "TRX",
-    "avalanche-2": "AVAX"
+    "avalanche-2": "AVAX",
+    "saga "SAGA"
 }
 def get_price(coin):
     url = f"https://api.coingecko.com/api/v3/simple/price?ids={coin}&vs_currencies=usd"
