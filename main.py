@@ -85,7 +85,7 @@ while True:
             if rsi:
                 if rsi < 35:
                     enviar_free(
-                        f"{'🟢 COMPRA' if sinal=='COMPRA' else '🔴 VENDA'}\n"
+                        f"🟢 COMPRA\n"
                         f"Moeda: {simbolo} ({coin.upper()})\n"
                         f"Preço: ${preco}\n"
                         f"RSI: {rsi:.2f}"
