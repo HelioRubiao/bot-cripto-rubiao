@@ -90,7 +90,8 @@ while True:
                         f"Preço: ${preco}\n"
                         f"RSI: {rsi:.2f}"
 )        
-            agora = time.time()
+                    
+        agora = time.time()
 
             if agora - ultima_noticia > 1800:  # 30 minutos
                 enviar_telegram("📰 Atualização do mercado em breve...")
