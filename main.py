@@ -93,9 +93,9 @@ while True:
                     
         agora = time.time()
 
-            if agora - ultima_noticia > 1800:  # 30 minutos
-                enviar_telegram("📰 Atualização do mercado em breve...")
-                ultima_noticia = agora
+        if agora - ultima_noticia > 1800:  # 30 minutos
+           enviar_telegram("📰 Atualização do mercado em breve...")
+           ultima_noticia = agora
         time.sleep(60)
 
     except Exception as e:
