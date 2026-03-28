@@ -1,6 +1,6 @@
 import requests
 import time
-
+ultimo_sinal = {}
 import os
 
 TOKEN = os.getenv("TOKEN")
@@ -83,14 +83,15 @@ while True:
 
             rsi = calcular_rsi(historico[coin])
 
-            if rsi:
-                if rsi < 35:
-                    enviar_free(
-                        f"🟢 COMPRA\n"
-                        f"Moeda: {simbolo} ({coin.upper()})\n"
-                        f"Preço: ${preco}\n"
-                        f"RSI: {rsi:.2f}"
-)
+            if rsi < 35:
+    if coin not in ultimo_sinal or ultimo_sinal[coin] != "COMPRA":
+        enviar_free(
+            f"🟢 COMPRA\n"
+            f"Moeda: {simbolo} ({coin.upper()})\n"
+            f"Preço: ${preco}\n"
+            f"RSI: {rsi:.2f}"
+        )
+        ultimo_sinal[coin] = "COMPRA"
                     #V1
         for coin, simbolo in MOEDAS_V1.items():
             preco = get_price(coin)
