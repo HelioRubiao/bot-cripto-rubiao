@@ -100,7 +100,8 @@ while True:
                               f"Preço: ${preco}\n"
                               f"RSI: {rsi:.2f}"
                     )
-                    ultimo_sinal[coin] = "VENDA"
+                     ultimo_sinal[coin] = "VENDA"
+                
                     #V1
         for coin, simbolo in MOEDAS_V1.items():
             preco = get_price(coin)
