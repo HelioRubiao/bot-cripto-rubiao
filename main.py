@@ -92,6 +92,15 @@ while True:
                         f"RSI: {rsi:.2f}"
                     )
                     ultimo_sinal[coin] = "COMPRA"
+                elif rsi > 60:
+                      if coin not in ultimo_sinal or ultimo_sinal[coin] != "VENDA":
+                          enviar_free(
+                              f"🔴 VENDA\n"
+                              f"Moeda: {simbolo} ({coin.upper()})\n"
+                              f"Preço: ${preco}\n"
+                              f"RSI: {rsi:.2f}"
+                    )
+                    ultimo_sinal[coin] = "VENDA"
                     #V1
         for coin, simbolo in MOEDAS_V1.items():
             preco = get_price(coin)
