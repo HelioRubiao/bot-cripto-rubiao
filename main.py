@@ -118,10 +118,12 @@ while True:
             if rsi:
                 if rsi < 35:
                     enviar_v1(
-                    f"🔥 COMPRA VIP {simbolo}\n"
+                    f"🔥 SINAL VIP\n"
+                    f"Moeda: {simbolo} ({coin.upper()})\n"
                     f"Preço: ${preco}\n"
-                    f"RSI: {rsi:.2f}"
-            )
+                    f"RSI: {rsi:.2f}\n"
+                    f"⚡ Possível oportunidade identificada"
+            ) 
                     
         agora = time.time()
 
