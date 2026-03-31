@@ -95,7 +95,7 @@ while True:
                 ultimo_sinal[coin] = "COMPRA"
                 ultimo_preco_compra[coin] = preco
             elif rsi > 60:
-                if coin in ultimo_preco_compra and preco > ultimo_preco_compra[coin]:
+                if coin in ultimo_preco_compra and preco >= ultimo_preco_compra[coin] * 1.01:
                     if coin not in ultimo_sinal or ultimo_sinal[coin] != "VENDA":
                             enviar_free(
                                 f"🔴 VENDA\n"
