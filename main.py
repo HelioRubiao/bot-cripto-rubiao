@@ -7,7 +7,18 @@ import os
 TOKEN = os.getenv("TOKEN")
 CHAT_ID_FREE = os.getenv("CHAT_ID_FREE")
 CHAT_ID_V1 = os.getenv("CHAT_ID_V1")
-
+MAPA_BINANCE = {
+    "bitcoin": "BTC",
+    "ethereum": "ETH",
+    "solana": "SOL",
+    "ripple": "XRP",
+    "litecoin": "LTC",
+    "binancecoin": "BNB",
+    "cardano": "ADA",
+    "dogecoin": "DOGE",
+    "tron": "TRX",
+    "avalanche-2": "AVAX"
+}
 MOEDAS_FREE = {
     "bitcoin": "BTC",
     "ethereum": "ETH",
