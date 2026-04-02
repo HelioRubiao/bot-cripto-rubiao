@@ -36,7 +36,14 @@ def get_price(coin):
 def calcular_rsi(precos, periodo=14):
     if len(precos) < periodo:
         return None
-
+def get_price_binance(symbol):
+    try:
+        url = f"https://api.binance.com/api/v3/ticker/price?symbol={symbol}USDT"
+        response = requests.get(url)
+        data = response.json()
+        return float(data["price"])
+    except:
+        return None
     ganhos = []
     perdas = []
 
