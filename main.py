@@ -102,16 +102,22 @@ while True:
 
             rsi = calcular_rsi(historico[coin])
 
-            if rsi < 35:
-                if coin not in ultimo_sinal or ultimo_sinal[coin] != "COMPRA":
-                    enviar_free(
-                        f"🟢 COMPRA\n"
-                        f"Moeda: {simbolo} ({coin.upper()})\n"
-                        f"Preço: ${preco}\n"
-                        f"RSI: {rsi:.2f}"
-                )
-                ultimo_sinal[coin] = "COMPRA"
-                ultimo_preco_compra[coin] = preco
+            media = sum(historico[coin]) / len(historico[coin])
+
+            preco_binance = get_price_binance(MAPA_BINANCE[coin])
+
+            if rsi < 35 and preco < media:
+                if preco_binance and abs(preco - preco_binance) / preco < 0.01:
+                    if coin not in ultimo_sinal or ultimo_sinal[coin] != "COMPRA":
+                        enviar_free(
+                            f"🟢 COMPRA\n"
+                            f"Moeda: {simbolo} ({coin.upper()})\n"
+                            f"Preço: ${preco}\n"
+                            f"RSI: {rsi:.2f}"
+                        )
+                        ultimo_sinal[coin] = "COMPRA"
+                        ultimo_preco_compra[coin] = preco
+            
             elif rsi > 60:
                 if coin in ultimo_preco_compra and preco >= ultimo_preco_compra[coin] * 1.01:
                     if coin not in ultimo_sinal or ultimo_sinal[coin] != "VENDA":
