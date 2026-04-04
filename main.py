@@ -2,6 +2,7 @@ import requests
 import time
 ultimo_sinal = {}
 ultimo_preco_compra = {}
+ultimo_relatorio = 0
 import os
 
 TOKEN = os.getenv("TOKEN")
@@ -52,6 +53,21 @@ def get_price(coin):
 def calcular_rsi(precos, periodo=14):
     if len(precos) < periodo:
         return None
+def get_market_data(coin):
+    try:
+        url = f"https://api.coingecko.com/api/v3/coins/{coin}"
+        data = requests.get(url).json()
+
+        preco = data["market_data"]["current_price"]["usd"]
+        volume = data["market_data"]["total_volume"]["usd"]
+        high = data["market_data"]["high_24h"]["usd"]
+        low = data["market_data"]["low_24h"]["usd"]
+        variacao = data["market_data"]["price_change_percentage_24h"]
+
+        return preco, volume, high, low, variacao
+    except:
+        return None, None, None, None, None
+        
 def get_price_binance(symbol):
     try:
         url = f"https://api.binance.com/api/v3/ticker/price?symbol={symbol}USDT"
@@ -159,6 +175,27 @@ while True:
            enviar_telegram("📰 Atualização do mercado em breve...")
            ultima_noticia = agora
         time.sleep(60)
+        agora = time.time()
+
+if agora - ultimo_relatorio > 3600:  # 1 hora
+    for coin, simbolo in MOEDAS_FREE.items():
+        preco, volume, high, low, variacao = get_market_data(coin)
+
+        if preco:
+            mensagem = (
+                f"📊 RELATÓRIO DE MERCADO\n"
+                f"{simbolo}\n"
+                f"Preço: ${preco}\n"
+                f"Variação 24h: {variacao:.2f}%\n"
+                f"Volume: ${volume}\n"
+                f"Máxima 24h: ${high}\n"
+                f"Mínima 24h: ${low}"
+            )
+
+            enviar_free(mensagem)
+            enviar_v1(mensagem)
+
+    ultimo_relatorio = agora
 
     except Exception as e:
         print("Erro:", e)        
