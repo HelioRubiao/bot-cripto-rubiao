@@ -111,8 +111,8 @@ while True:
 
             preco_binance = get_price_binance(MAPA_BINANCE[coin])
 
-            if rsi < 55 and preco < media:
-                if preco_binance and abs(preco - preco_binance) / preco < 0.02:
+            if rsi < 35 and preco < media:
+                if preco_binance
                     if coin not in ultimo_sinal or ultimo_sinal[coin] != "COMPRA":
                         enviar_free(
                             f"🟢 COMPRA\n"
