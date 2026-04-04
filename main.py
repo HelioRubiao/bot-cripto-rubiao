@@ -40,9 +40,14 @@ MOEDAS_V1 = {
     "avalanche-2": "AVAX"
 }
 def get_price(coin):
-    url = f"https://api.coingecko.com/api/v3/simple/price?ids={coin}&vs_currencies=usd"
-    data = requests.get(url).json()
-    return data[coin]["usd"]
+    try:
+        symbol = MAPA_BINANCE[coin]
+        url = f"https://api.binance.com/api/v3/ticker/price?symbol={symbol}USDT"
+        response = requests.get(url)
+        data = response.json()
+        return float(data["price"])
+    except:
+        return None
 
 def calcular_rsi(precos, periodo=14):
     if len(precos) < periodo:
