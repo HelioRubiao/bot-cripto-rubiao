@@ -109,10 +109,9 @@ while True:
 
             media = sum(historico[coin]) / len(historico[coin])
 
-            preco_binance = get_price_binance(MAPA_BINANCE[coin])
-
+            
             if rsi < 35 and preco < media:
-                if preco_binance:
+            
                     if coin not in ultimo_sinal or ultimo_sinal[coin] != "COMPRA":
                         enviar_free(
                             f"🟢 COMPRA\n"
