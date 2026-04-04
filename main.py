@@ -177,25 +177,25 @@ while True:
         time.sleep(60)
         agora = time.time()
 
-if agora - ultimo_relatorio > 3600:  # 1 hora
-    for coin, simbolo in MOEDAS_FREE.items():
-        preco, volume, high, low, variacao = get_market_data(coin)
+        if agora - ultimo_relatorio > 3600:  # 1 hora
+            for coin, simbolo in MOEDAS_FREE.items():
+                preco, volume, high, low, variacao = get_market_data(coin)
 
-        if preco:
-            mensagem = (
-                f"📊 RELATÓRIO DE MERCADO\n"
-                f"{simbolo}\n"
-                f"Preço: ${preco}\n"
-                f"Variação 24h: {variacao:.2f}%\n"
-                f"Volume: ${volume}\n"
-                f"Máxima 24h: ${high}\n"
-                f"Mínima 24h: ${low}"
-            )
+                if preco:
+                    mensagem = (
+                        f"📊 RELATÓRIO DE MERCADO\n"
+                        f"{simbolo}\n"
+                        f"Preço: ${preco}\n"
+                        f"Variação 24h: {variacao:.2f}%\n"
+                        f"Volume: ${volume}\n"
+                        f"Máxima 24h: ${high}\n"
+                        f"Mínima 24h: ${low}"
+                    )
 
-            enviar_free(mensagem)
-            enviar_v1(mensagem)
+                    enviar_free(mensagem)
+                    enviar_v1(mensagem)
 
-    ultimo_relatorio = agora
+            ultimo_relatorio = agora
 
     except Exception as e:
         print("Erro:", e)        
