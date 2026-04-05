@@ -126,7 +126,7 @@ while True:
             media = sum(historico[coin]) / len(historico[coin])
 
             
-            if rsi < 35 and preco < media:
+            if rsi < 35
             
                     if coin not in ultimo_sinal or ultimo_sinal[coin] != "COMPRA":
                         enviar_free(
