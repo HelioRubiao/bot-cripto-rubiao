@@ -133,38 +133,44 @@ ultima_noticia = 0
 while True:
     try:
         #free
-        for coin, simbolo in MOEDAS_FREE.items():
-            preco = get_price(coin)
-            historico[coin].append(preco)
+        # FREE
+for coin, simbolo in MOEDAS_FREE.items():
+    preco = get_price(coin)
 
-            if len(historico[coin]) > 50:
-                historico[coin].pop(0)
+    if preco is None:
+        continue
 
-            rsi = calcular_rsi(historico[coin])
+    historico[coin].append(preco)
 
-            media = sum(historico[coin]) / len(historico[coin])
+    if len(historico[coin]) > 50:
+        historico[coin].pop(0)
 
-            
-            if rsi is not None and rsi < 35:
-            
-                    if coin not in ultimo_sinal or ultimo_sinal[coin] != "COMPRA":
-                        enviar_free(
-                            f"🟢 COMPRA\n"
-                            f"Moeda: {simbolo} ({coin.upper()})\n"
-                            f"Preço: ${preco}\n"
-                            f"RSI: {rsi:.2f}"
-                        )
-                        ultimo_sinal[coin] = "COMPRA"
-                        ultimo_preco_compra[coin] = preco
-            
-            elif rsi is not None and rsi > 60:
-                if coin in ultimo_preco_compra and preco >= ultimo_preco_compra[coin] * 1.01:
-                    if coin not in ultimo_sinal or ultimo_sinal[coin] != "VENDA":
-                            enviar_free(
-                                f"🔴 VENDA\n"
-                                f"Moeda: {simbolo} ({coin.upper()})\n"
-                                f"Preço: ${preco}\n"
-                                f"RSI: {rsi:.2f}"
+    rsi = calcular_rsi(historico[coin])
+
+    if rsi is None:
+        continue
+
+    # COMPRA
+    if rsi < 35:
+        if coin not in ultimo_sinal or ultimo_sinal[coin] != "COMPRA":
+            enviar_free(
+                f"🟢 COMPRA\n"
+                f"Moeda: {simbolo} ({coin.upper()})\n"
+                f"Preço: ${preco}\n"
+                f"RSI: {rsi:.2f}"
+            )
+            ultimo_sinal[coin] = "COMPRA"
+            ultimo_preco_compra[coin] = preco
+
+    # VENDA
+    elif rsi > 60:
+        if coin in ultimo_preco_compra and preco >= ultimo_preco_compra[coin] * 1.01:
+            if coin not in ultimo_sinal or ultimo_sinal[coin] != "VENDA":
+                enviar_free(
+                    f"🔴 VENDA\n"
+                    f"Moeda: {simbolo} ({coin.upper()})\n"
+                    f"Preço: ${preco}\n"
+                    f"RSI: {rsi:.2f}"
                 )
                 ultimo_sinal[coin] = "VENDA"
                 
