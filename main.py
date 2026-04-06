@@ -131,9 +131,8 @@ ultima_noticia = 0
 
 while True:
     try:
-        
         # FREE
-for coin, simbolo in MOEDAS_FREE.items():
+     for coin, simbolo in MOEDAS_FREE.items():
     preco = get_price(coin)
 
     if preco is None:
