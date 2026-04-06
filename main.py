@@ -192,7 +192,7 @@ while True:
 
         if agora - ultima_noticia > 1800:  # 30 minutos
            enviar_free("📰 Atualização do mercado em breve...")
-enviar_v1("📰 Atualização do mercado em breve...")
+           enviar_v1("📰 Atualização do mercado em breve...")
            ultima_noticia = agora
         time.sleep(60)
         agora = time.time()
