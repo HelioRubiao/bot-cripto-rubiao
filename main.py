@@ -53,6 +53,25 @@ def get_price(coin):
 def calcular_rsi(precos, periodo=14):
     if len(precos) < periodo:
         return None
+
+    ganhos = []
+    perdas = []
+
+    for i in range(1, len(precos)):
+        diff = precos[i] - precos[i-1]
+        if diff >= 0:
+            ganhos.append(diff)
+        else:
+            perdas.append(abs(diff))
+
+    media_ganho = sum(ganhos[-periodo:]) / periodo if ganhos else 0
+    media_perda = sum(perdas[-periodo:]) / periodo if perdas else 1
+
+    rs = media_ganho / media_perda
+    rsi = 100 - (100 / (1 + rs))
+
+    return rsi
+
 def get_market_data(coin):
     try:
         url = f"https://api.coingecko.com/api/v3/coins/{coin}"
