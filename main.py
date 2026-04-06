@@ -86,15 +86,14 @@ def get_market_data(coin):
         return preco, volume, high, low, variacao
     except:
         return None, None, None, None, None
-        
-def get_price_binance(symbol):
+def get_price(coin):
     try:
-        url = f"https://api.binance.com/api/v3/ticker/price?symbol={symbol}USDT"
-        response = requests.get(url)
-        data = response.json()
-        return float(data["price"])
+        url = f"https://api.coingecko.com/api/v3/simple/price?ids={coin}&vs_currencies=usd"
+        data = requests.get(url).json()
+        return data[coin]["usd"]
     except:
         return None
+        
     ganhos = []
     perdas = []
 
