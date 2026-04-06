@@ -132,7 +132,7 @@ ultima_noticia = 0
 
 while True:
     try:
-        #free
+        
         # FREE
 for coin, simbolo in MOEDAS_FREE.items():
     preco = get_price(coin)
