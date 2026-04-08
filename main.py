@@ -103,37 +103,37 @@ while True:
                         enviar_free(mensagem)
                         ultimo_giro = agora
 
-def giro_mercado():
-    mensagem = "🌎 GIRO DO MERCADO\n\n"
+    def giro_mercado():
+        mensagem = "🌎 GIRO DO MERCADO\n\n"
 
-    for coin, simbolo in MOEDAS_FREE.items():
-        try:
-            url = f"https://api.coingecko.com/api/v3/simple/price?ids={coin}&vs_currencies=usd&include_24hr_change=true"
-            data = requests.get(url).json()
+        for coin, simbolo in MOEDAS_FREE.items():
+            try:
+                url = f"https://api.coingecko.com/api/v3/simple/price?ids={coin}&vs_currencies=usd&include_24hr_change=true"
+                data = requests.get(url).json()
 
-            preco = data[coin]["usd"]
-            variacao = data[coin]["usd_24h_change"]
+                preco = data[coin]["usd"]
+                variacao = data[coin]["usd_24h_change"]
 
-            if variacao > 1:
-                resumo = "🟢 Subindo bem"
-            elif variacao > 0:
-                resumo = "🟡 Leve alta"
-            elif variacao > -2:
-                resumo = "🔴 Leve queda"
-            else:
-                resumo = "🔴 Queda forte"
+                if variacao > 1:
+                    resumo = "🟢 Subindo bem"
+                elif variacao > 0:
+                    resumo = "🟡 Leve alta"
+                elif variacao > -2:
+                    resumo = "🔴 Leve queda"
+                else:
+                    resumo = "🔴 Queda forte"
 
-            mensagem += (
-                f"🪙 {simbolo}\n"
-                f"Preço: ${preco}\n"
-                f"Variação 24h: {variacao:.2f}%\n"
-                f"{resumo}\n\n"
-            )
+                mensagem += (
+                    f"🪙 {simbolo}\n"
+                    f"Preço: ${preco}\n"
+                    f"Variação 24h: {variacao:.2f}%\n"
+                    f"{resumo}\n\n"
+                )
 
-        except:
-            continue
+            except:
+                continue
 
-    return mensagem
+        return mensagem
 
         time.sleep(60)
 
