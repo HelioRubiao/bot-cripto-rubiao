@@ -127,8 +127,8 @@ while True:
                             f"RSI: {rsi:.2f}"
                         )
                         ultimo_sinal[coin] = "VENDA"
-                        agora = time.time()
-
+                agora = time.time()
+                print("Verificando giro...")
                 if agora - ultimo_giro > 1800:  # 30 minutos
                         mensagem = giro_mercado()
                         enviar_free(mensagem)
