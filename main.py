@@ -1,7 +1,6 @@
 import requests
 import time
 import os
-ultimo_giro = 0
 
 TOKEN = os.getenv("TOKEN")
 CHAT_ID_FREE = os.getenv("CHAT_ID_FREE")
@@ -54,37 +53,6 @@ def enviar_free(msg):
     requests.post(url, data={"chat_id": CHAT_ID_FREE, "text": msg})
 
 enviar_free("🟢 Bot FREE reiniciado e funcionando")
-def giro_mercado():
-        mensagem = "🌎 GIRO DO MERCADO\n\n"
-
-        for coin, simbolo in MOEDAS_FREE.items():
-            try:
-                url = f"https://api.coingecko.com/api/v3/simple/price?ids={coin}&vs_currencies=usd&include_24hr_change=true"
-                data = requests.get(url).json()
-
-                preco = data[coin]["usd"]
-                variacao = data[coin]["usd_24h_change"]
-
-                if variacao > 1:
-                    resumo = "🟢 Subindo bem"
-                elif variacao > 0:
-                    resumo = "🟡 Leve alta"
-                elif variacao > -2:
-                    resumo = "🔴 Leve queda"
-                else:
-                    resumo = "🔴 Queda forte"
-
-                mensagem += (
-                    f"🪙 {simbolo}\n"
-                    f"Preço: ${preco}\n"
-                    f"Variação 24h: {variacao:.2f}%\n"
-                    f"{resumo}\n\n"
-                )
-
-            except:
-                continue
-
-        return mensagem
 
 while True:
     try:
@@ -127,13 +95,7 @@ while True:
                             f"RSI: {rsi:.2f}"
                         )
                         ultimo_sinal[coin] = "VENDA"
-        agora = time.time()
-        print("Verificando giro...")
-        if agora - ultimo_giro > 1800:
-           mensagem = giro_mercado()
-           enviar_free(mensagem)
-           ultimo_giro = agora
-    
+
         time.sleep(60)
 
     except Exception as e:
