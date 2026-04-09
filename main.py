@@ -129,7 +129,7 @@ while True:
                         ultimo_sinal[coin] = "VENDA"
         agora = time.time()
         print("Verificando giro...")
-        if true:
+        if True:
            mensagem = giro_mercado()
            enviar_free(mensagem)
            ultimo_giro = agora
