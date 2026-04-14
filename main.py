@@ -10,6 +10,7 @@ MOEDAS_FREE = {
     "ethereum": "ETH",
     "solana": "SOL",
     "ripple": "XRP",
+    "binance" : "BNB",
     "litecoin": "LTC"
 }
 
@@ -81,6 +82,7 @@ while True:
                         f"Moeda: {simbolo}\n"
                         f"Preço: ${preco}\n"
                         f"RSI: {rsi:.2f}"
+                        f"📊 Sinal baseado no mercado global (média)"
                     )
                     ultimo_sinal[coin] = "COMPRA"
                     ultimo_preco_compra[coin] = preco
