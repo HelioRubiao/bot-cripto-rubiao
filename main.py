@@ -12,7 +12,7 @@ MOEDAS_FREE = {
     "ethereum": "ETH",
     "solana": "SOL",
     "ripple": "XRP",
-    "binance" : "BNB",
+    "binancecoin" : "BNB",
     "litecoin": "LTC"
 }
 
