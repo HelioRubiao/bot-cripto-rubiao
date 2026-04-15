@@ -81,8 +81,8 @@ while True:
                         f"🟢 COMPRA\n"
                         f"Moeda: {simbolo}\n"
                         f"Preço: ${preco}\n"
-                        f"RSI: {rsi:.2f}"
-                        f"📊 Sinal baseado no mercado global (média)"
+                        f"RSI: {rsi:.2f}\n"
+                        f"📊 Sinal baseado no mercado global (COINGEKO)"
                     )
                     ultimo_sinal[coin] = "COMPRA"
                     ultimo_preco_compra[coin] = preco
