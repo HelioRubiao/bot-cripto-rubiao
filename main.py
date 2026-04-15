@@ -30,8 +30,6 @@ ultimo_preco_compra = {}
 
 for coin in MOEDAS_FREE:
     historico[coin] = []
-enviar_free("🟢 Free funcionando")
-enviar_v1("🔒 VIP funcionando")
     
 def get_price(coin):
     try:
@@ -62,14 +60,15 @@ def calcular_rsi(precos, periodo=14):
     return 100 - (100 / (1 + rs))
 
 def enviar_free(msg):
-    def enviar_v1(msg):
-        url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-        requests.post(url, data={"chat_id": CHAT_ID_V1, "text": msg})
-    
+        
         url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
         requests.post(url, data={"chat_id": CHAT_ID_FREE, "text": msg})
+def enviar_v1(msg):
+        url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+        requests.post(url, data={"chat_id": CHAT_ID_V1, "text": msg})
 
 enviar_free("🟢 Bot FREE reiniciado e funcionando")
+enviar_V1("🔒 VIP funcionando")
 
 def resumo_resultado():
     if not resultado_dia:
