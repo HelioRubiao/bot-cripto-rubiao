@@ -6,6 +6,7 @@ ultimo_resumo = 0
 
 TOKEN = os.getenv("TOKEN")
 CHAT_ID_FREE = os.getenv("CHAT_ID_FREE")
+CHAT_ID_V1 = os.getenv("CHAT_ID_V1")
 
 MOEDAS_FREE = {
     "bitcoin": "BTC",
