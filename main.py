@@ -2,6 +2,7 @@ import requests
 import time
 import os
 resultado_dia = []
+ultimo_resumo = 0
 
 TOKEN = os.getenv("TOKEN")
 CHAT_ID_FREE = os.getenv("CHAT_ID_FREE")
@@ -56,6 +57,21 @@ def enviar_free(msg):
 
 enviar_free("🟢 Bot FREE reiniciado e funcionando")
 
+def resumo_resultado():
+    if not resultado_dia:
+        return "📊 RESUMO DO DIA\n\nNenhuma operação fechada ainda."
+
+    total = sum(resultado_dia)
+    media = total / len(resultado_dia)
+
+    return (
+        "📊 RESUMO DO DIA\n\n"
+        f"Operações: {len(resultado_dia)}\n"
+        f"Resultado acumulado: {total:.2f}%\n"
+        f"Média por operação: {media:.2f}%\n\n"
+        "⚠️ Simulação baseada nos sinais do bot"
+    )
+
 while True:
     try:
         print("Rodando...")
@@ -102,7 +118,14 @@ while True:
                             f"RSI: {rsi:.2f}"
                         )
                         ultimo_sinal[coin] = "VENDA"
+            agora = time.time()
 
+            if agora - ultimo_resumo > 86400:  # 24 horas
+                mensagem = resumo_resultado()
+                enviar_free(mensagem)
+                resultado_dia.clear()
+                ultimo_resumo = agora
+                
         time.sleep(60)
 
     except Exception as e:
