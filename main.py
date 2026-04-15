@@ -15,6 +15,14 @@ MOEDAS_FREE = {
     "binancecoin" : "BNB",
     "litecoin": "LTC"
 }
+MOEDAS_V1 = {
+    "bitcoin": "BTC",
+    "ethereum": "ETH",
+    "solana": "SOL",
+    "ripple": "XRP",
+    "binancecoin": "BNB",
+    "litecoin": "LTC"
+}
 
 historico = {}
 ultimo_sinal = {}
@@ -52,6 +60,10 @@ def calcular_rsi(precos, periodo=14):
     return 100 - (100 / (1 + rs))
 
 def enviar_free(msg):
+    def enviar_v1(msg):
+    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    requests.post(url, data={"chat_id": CHAT_ID_V1, "text": msg})
+    
     url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
     requests.post(url, data={"chat_id": CHAT_ID_FREE, "text": msg})
 
@@ -103,7 +115,30 @@ while True:
                     )
                     ultimo_sinal[coin] = "COMPRA"
                     ultimo_preco_compra[coin] = preco
+                for coin, simbolo in MOEDAS_V1.items():
+                    preco = get_price(coin)
 
+                    if preco is None:
+                        continue
+
+                    historico[coin].append(preco)
+
+                    if len(historico[coin]) > 50:
+                        historico[coin].pop(0)
+
+                    rsi = calcular_rsi(historico[coin])
+
+                    if rsi is None:
+                        continue
+
+                    if rsi < 35:
+                        enviar_v1(
+                            f"🔥 SINAL VIP\n"
+                            f"Moeda: {simbolo}\n"
+                            f"Preço: ${preco}\n"
+                            f"RSI: {rsi:.2f}"
+                        )
+                        
             elif rsi > 60:
                 if coin in ultimo_preco_compra and preco >= ultimo_preco_compra[coin] * 1.01:
                     if coin not in ultimo_sinal or ultimo_sinal[coin] != "VENDA":
