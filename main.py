@@ -1,6 +1,7 @@
 import requests
 import time
 import os
+resultado_dia = []
 
 TOKEN = os.getenv("TOKEN")
 CHAT_ID_FREE = os.getenv("CHAT_ID_FREE")
