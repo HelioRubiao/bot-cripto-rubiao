@@ -61,11 +61,11 @@ def calcular_rsi(precos, periodo=14):
 
 def enviar_free(msg):
     def enviar_v1(msg):
-    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-    requests.post(url, data={"chat_id": CHAT_ID_V1, "text": msg})
+        url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+        requests.post(url, data={"chat_id": CHAT_ID_V1, "text": msg})
     
-    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-    requests.post(url, data={"chat_id": CHAT_ID_FREE, "text": msg})
+        url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+        requests.post(url, data={"chat_id": CHAT_ID_FREE, "text": msg})
 
 enviar_free("🟢 Bot FREE reiniciado e funcionando")
 
