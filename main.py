@@ -30,7 +30,6 @@ ultimo_preco_compra = {}
 
 for coin in MOEDAS_FREE:
     historico[coin] = []
-
 enviar_free("🟢 Free funcionando")
 enviar_v1("🔒 VIP funcionando")
     
