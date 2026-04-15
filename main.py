@@ -31,6 +31,9 @@ ultimo_preco_compra = {}
 for coin in MOEDAS_FREE:
     historico[coin] = []
 
+    enviar_free("🟢 Free funcionando")
+    enviar_v1("🔒 VIP funcionando")
+    
 def get_price(coin):
     try:
         url = f"https://api.coingecko.com/api/v3/simple/price?ids={coin}&vs_currencies=usd"
