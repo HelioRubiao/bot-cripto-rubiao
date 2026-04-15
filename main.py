@@ -68,7 +68,7 @@ def enviar_v1(msg):
         requests.post(url, data={"chat_id": CHAT_ID_V1, "text": msg})
 
 enviar_free("🟢 Bot FREE reiniciado e funcionando")
-enviar_V1("🔒 VIP funcionando")
+enviar_v1("🔒 VIP funcionando")
 
 def resumo_resultado():
     if not resultado_dia:
