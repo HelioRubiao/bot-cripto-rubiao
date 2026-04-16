@@ -153,7 +153,7 @@ while True:
                             f"Preço: ${preco}\n"
                             f"RSI: {rsi:.2f}"
                         )
-                                  ultimo_sinal_free[coin] = "VENDA"
+                     ultimo_sinal_free[coin] = "VENDA"
      #v1
             if rsi < 35:
                         enviar_v1(
