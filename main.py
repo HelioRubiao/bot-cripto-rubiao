@@ -154,6 +154,7 @@ while True:
                             f"RSI: {rsi:.2f}"
                         )
                         ultimo_sinal[coin] = "VENDA"
+     #v1
             if rsi < 35:
                         enviar_v1(
                             f"🔥 SINAL VIP\n\n"
