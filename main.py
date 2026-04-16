@@ -96,7 +96,7 @@ while True:
         print("Rodando...")
 
         for coin, simbolo in MOEDAS_FREE.items():
-            preco = get_price_binance(MAPA_BINANCE[coin])
+            preco = get_price(coin)
 
             if preco is None:
                 continue
