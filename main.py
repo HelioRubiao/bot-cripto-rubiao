@@ -154,16 +154,7 @@ while True:
                             f"RSI: {rsi:.2f}"
                         )
                         ultimo_sinal_free[coin] = "VENDA"
-     #v1
-            if rsi < 35:
-                        enviar_v1(
-                            f"🔥 SINAL VIP\n\n"
-                            f"🪙 Moeda: {simbolo}\n"
-                            f"💰 Preço: ${preco}\n"
-                            f"📊 RSI: {rsi:.2f}\n\n"
-                            f"🎯 Entrada identificada\n"
-                            f"⚠️ Gestão de risco recomendada"
-)
+     
             agora = time.time()
 
             if agora - ultimo_resumo > 86400:  # 24 horas
