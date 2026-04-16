@@ -120,8 +120,8 @@ while True:
                         f"RSI: {rsi:.2f}\n"
                         f"📊 Sinal baseado no mercado global (COINGEKO)"
                     )
-                    ultimo_sinal[coin] = "COMPRA"
-                    ultimo_preco_compra[coin] = preco
+                    ultimo_sinal_free[coin] = "COMPRA"
+                    ultimo_preco_compra_free[coin] = preco
                 for coin, simbolo in MOEDAS_V1.items():
                     preco = get_price(coin)
 
@@ -153,7 +153,7 @@ while True:
                             f"Preço: ${preco}\n"
                             f"RSI: {rsi:.2f}"
                         )
-                        ultimo_sinal[coin] = "VENDA"
+                                  ultimo_sinal_free[coin] = "VENDA"
      #v1
             if rsi < 35:
                         enviar_v1(
