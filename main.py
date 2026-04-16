@@ -92,8 +92,6 @@ while True:
 
         for coin, simbolo in MOEDAS_FREE.items():
             preco = get_price_binance(MAPA_BINANCE[coin])
-            if preco is None:
-    continue
 
             if preco is None:
                 continue
