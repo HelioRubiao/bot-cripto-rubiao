@@ -110,7 +110,7 @@ while True:
                 continue
 
             if rsi < 35:
-                if coin not in ultimo_sinal or ultimo_sinal[coin] != "COMPRA":
+                if coin not in ultimo_sinal_free or ultimo_sinal_free[coin] != "COMPRA":
                     enviar_free(
                         f"🟢 COMPRA\n"
                         f"Moeda: {simbolo}\n"
