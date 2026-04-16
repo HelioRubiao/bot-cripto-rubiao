@@ -4,10 +4,8 @@ import os
 resultado_dia = []
 ultimo_resumo = 0
 ultimo_sinal_free = {}
-ultimo_sinal_v1 = {}
-
 ultimo_preco_compra_free = {}
-ultimo_preco_compra_v1 = {}
+
 
 TOKEN = os.getenv("TOKEN")
 CHAT_ID_FREE = os.getenv("CHAT_ID_FREE")
@@ -122,7 +120,7 @@ while True:
                     )
                     ultimo_sinal_free[coin] = "COMPRA"
                     ultimo_preco_compra_free[coin] = preco
-                for coin, simbolo in MOEDAS_V1.items():
+                
                     preco = get_price(coin)
 
                     if preco is None:
