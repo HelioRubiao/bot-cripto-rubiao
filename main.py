@@ -3,6 +3,11 @@ import time
 import os
 resultado_dia = []
 ultimo_resumo = 0
+ultimo_sinal_free = {}
+ultimo_sinal_v1 = {}
+
+ultimo_preco_compra_free = {}
+ultimo_preco_compra_v1 = {}
 
 TOKEN = os.getenv("TOKEN")
 CHAT_ID_FREE = os.getenv("CHAT_ID_FREE")
