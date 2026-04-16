@@ -135,11 +135,13 @@ while True:
 
                     if rsi < 35:
                         enviar_v1(
-                            f"🔥 SINAL VIP\n"
-                            f"Moeda: {simbolo}\n"
-                            f"Preço: ${preco}\n"
-                            f"RSI: {rsi:.2f}"
-                        )
+                            f"🔥 SINAL VIP\n\n"
+                            f"🪙 Moeda: {simbolo}\n"
+                            f"💰 Preço: ${preco}\n"
+                            f"📊 RSI: {rsi:.2f}\n\n"
+                            f"🎯 Entrada identificada\n"
+                            f"⚠️ Gestão de risco recomendada"
+)
                         
             elif rsi > 60:
                 if coin in ultimo_preco_compra and preco >= ultimo_preco_compra[coin] * 1.01:
