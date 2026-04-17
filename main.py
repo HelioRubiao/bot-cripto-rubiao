@@ -152,6 +152,66 @@ while True:
                             f"RSI: {rsi:.2f}"
                         )
                         ultimo_sinal_free[coin] = "VENDA"
+        for coin, simbolo in MOEDAS_V1.items():
+            preco = get_price(coin)
+
+            if preco is None:
+                continue
+
+            historico[coin].append(preco)
+
+            if len(historico[coin]) > 50:
+                historico[coin].pop(0)
+
+            rsi = calcular_rsi(historico[coin])
+
+            if rsi is None:
+                continue
+
+            if rsi < 35:
+                if coin not in ultimo_sinal_free or ultimo_sinal_free[coin] != "COMPRA":
+                    enviar_free(
+                        f"🟢 COMPRA\n"
+                        f"Moeda: {simbolo}\n"
+                        f"Preço: ${preco}\n"
+                        f"RSI: {rsi:.2f}\n"
+                        f"📊 Sinal baseado no mercado global (COINGEKO)"
+                    )
+                    ultimo_sinal_free[coin] = "COMPRA"
+                    ultimo_preco_compra_free[coin] = preco
+                
+                    preco = get_price(coin)
+
+                    if preco is None:
+                        continue
+
+                    historico[coin].append(preco)
+
+                    if len(historico[coin]) > 50:
+                        historico[coin].pop(0)
+
+                    rsi = calcular_rsi(historico[coin])
+
+                    if rsi is None:
+                        continue
+
+                    
+                        
+            elif rsi > 60:
+                if coin in ultimo_preco_compra_free and preco >= ultimo_preco_compra_free[coin] * 1.01:
+                    if coin not in ultimo_sinal_free or ultimo_sinal_free[coin] != "VENDA":
+
+                        lucro = ((preco - ultimo_preco_compra_free[coin]) / ultimo_preco_compra_free[coin]) * 100
+                        resultado_dia.append(lucro)
+
+                        enviar_free(
+                            f"🔴 VENDA\n"
+                            f"Moeda: {simbolo}\n"
+                            f"Preço: ${preco}\n"
+                            f"RSI: {rsi:.2f}"
+                        )
+                        ultimo_sinal_free[coin] = "VENDA"
+
      
             agora = time.time()
 
