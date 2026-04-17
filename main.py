@@ -140,7 +140,7 @@ while True:
                         
             elif rsi > 60:
                 if coin in ultimo_preco_compra_free and preco >= ultimo_preco_compra_free[coin] * 1.01:
-                    if coin not in ultimo_sinal or ultimo_sinal_free[coin] != "VENDA":
+                    if coin not in ultimo_sinal_free or ultimo_sinal_free[coin] != "VENDA":
 
                         lucro = ((preco - ultimo_preco_compra_free[coin]) / ultimo_preco_compra_free[coin]) * 100
                         resultado_dia.append(lucro)
