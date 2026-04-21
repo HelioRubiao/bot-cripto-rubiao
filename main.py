@@ -169,16 +169,16 @@ while True:
                 continue
 
             if rsi < 35:
-                if coin not in ultimo_sinal_free or ultimo_sinal_free[coin] != "COMPRA":
-                    enviar_free(
+                if coin not in ultimo_sinal_v1 or ultimo_sinal_v1[coin] != "COMPRA":
+                    enviar_v1(
                         f"🟢 COMPRA\n"
                         f"Moeda: {simbolo}\n"
                         f"Preço: ${preco}\n"
                         f"RSI: {rsi:.2f}\n"
                         f"📊 Sinal baseado no mercado global (COINGEKO)"
                     )
-                    ultimo_sinal_free[coin] = "COMPRA"
-                    ultimo_preco_compra_free[coin] = preco
+                    ultimo_sinal_v1[coin] = "COMPRA"
+                    ultimo_preco_compra_v1[coin] = preco
                 
                     preco = get_price(coin)
 
@@ -198,19 +198,19 @@ while True:
                     
                         
             elif rsi > 60:
-                if coin in ultimo_preco_compra_free and preco >= ultimo_preco_compra_free[coin] * 1.01:
-                    if coin not in ultimo_sinal_free or ultimo_sinal_free[coin] != "VENDA":
+                if coin in ultimo_preco_compra_v1 and preco >= ultimo_preco_compra_v1[coin] * 1.01:
+                    if coin not in ultimo_sinal_v1 or ultimo_sinal_v1[coin] != "VENDA":
 
-                        lucro = ((preco - ultimo_preco_compra_free[coin]) / ultimo_preco_compra_free[coin]) * 100
+                        lucro = ((preco - ultimo_preco_compra_v1[coin]) / ultimo_preco_compra_v1[coin]) * 100
                         resultado_dia.append(lucro)
 
-                        enviar_free(
+                        enviar_v1(
                             f"🔴 VENDA\n"
                             f"Moeda: {simbolo}\n"
                             f"Preço: ${preco}\n"
                             f"RSI: {rsi:.2f}"
                         )
-                        ultimo_sinal_free[coin] = "VENDA"
+                        ultimo_sinal_v1[coin] = "VENDA"
 
      
             agora = time.time()
