@@ -19,6 +19,14 @@ MOEDAS_FREE = {
     "binancecoin" : "BNB",
     "litecoin": "LTC"
 }
+MAPA_KUCOIN = {
+    "bitcoin": "BTC",
+    "ethereum": "ETH",
+    "solana": "SOL",
+    "ripple": "XRP",
+    "binancecoin": "BNB",
+    "litecoin": "LTC"
+}
 MOEDAS_V1 = {
     "bitcoin": "BTC",
     "ethereum": "ETH",
@@ -35,11 +43,21 @@ ultimo_preco_compra = {}
 for coin in MOEDAS_FREE:
     historico[coin] = []
     
-def get_price(coin):
+preco = get_price_kucoin(MAPA_KUCOIN[coin])
+if preco is None:
+    continue
     try:
         url = f"https://api.coingecko.com/api/v3/simple/price?ids={coin}&vs_currencies=usd"
         data = requests.get(url).json()
         return data[coin]["usd"]
+    except:
+        return None
+
+def get_price_kucoin(symbol):
+    try:
+        url = f"https://api.kucoin.com/api/v1/market/orderbook/level1?symbol={symbol}-USDT"
+        response = requests.get(url).json()
+        return float(response["data"]["price"])
     except:
         return None
 
