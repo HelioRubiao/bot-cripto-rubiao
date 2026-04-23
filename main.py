@@ -26,6 +26,7 @@ MAPA_KUCOIN = {
     "ripple": "XRP",
     "binancecoin": "BNB",
     "litecoin": "LTC"
+    "kcs": "KCS"
 }
 MOEDAS_V1 = {
     "bitcoin": "BTC",
