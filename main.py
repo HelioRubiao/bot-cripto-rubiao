@@ -18,6 +18,7 @@ MOEDAS_FREE = {
     "ripple": "XRP",
     "binancecoin" : "BNB",
     "litecoin": "LTC"
+    "kcs": "KCS"
 }
 MAPA_KUCOIN = {
     "bitcoin": "BTC",
