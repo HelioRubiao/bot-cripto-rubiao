@@ -241,7 +241,7 @@ while True:
                 resultado_dia.clear()
                 ultimo_resumo = agora
                 
-        time.sleep(60)
+        time.sleep(300)
 
     except Exception as e:
         print("Erro:", e)
