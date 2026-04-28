@@ -1,248 +1,139 @@
 import requests
 import time
 import os
-resultado_dia = []
-ultimo_resumo = 0
-ultimo_sinal_free = {}
-ultimo_preco_compra_free = {}
 
-
+# --- 1. Configurações e Variáveis de Ambiente ---
 TOKEN = os.getenv("TOKEN")
 CHAT_ID_FREE = os.getenv("CHAT_ID_FREE")
 CHAT_ID_V1 = os.getenv("CHAT_ID_V1")
+CHAT_ID_V2 = os.getenv("CHAT_ID_V2") # Adicionado para Scalping
 
+# Dicionários de moedas (Corrigidos com vírgulas)
 MOEDAS_FREE = {
-    "bitcoin": "BTC",
-    "ethereum": "ETH",
-    "solana": "SOL",
-    "ripple": "XRP",
-    "binancecoin" : "BNB",
-    "litecoin": "LTC"
-    "kcs": "KCS"
+    "bitcoin": "BTC", "ethereum": "ETH", "solana": "SOL",
+    "ripple": "XRP", "binancecoin": "BNB", "litecoin": "LTC", "kcs": "KCS"
 }
-MAPA_KUCOIN = {
-    "bitcoin": "BTC",
-    "ethereum": "ETH",
-    "solana": "SOL",
-    "ripple": "XRP",
-    "binancecoin": "BNB",
-    "litecoin": "LTC"
-    "kcs": "KCS"
-}
+
 MOEDAS_V1 = {
-    "bitcoin": "BTC",
-    "ethereum": "ETH",
-    "solana": "SOL",
-    "ripple": "XRP",
-    "binancecoin": "BNB",
-    "litecoin": "LTC"
+    "bitcoin": "BTC", "ethereum": "ETH", "solana": "SOL",
+    "ripple": "XRP", "binancecoin": "BNB", "litecoin": "LTC"
 }
 
-historico = {}
-ultimo_sinal = {}
-ultimo_preco_compra = {}
+# Exemplo de configuração para o V2 (Scalping)
+MOEDAS_V2 = {
+    "pepe": "PEPE", "shiba-inu": "SHIB", "dogecoin": "DOGE"
+}
 
-for coin in MOEDAS_FREE:
+# --- 2. Inicialização de Estados ---
+historico = {}
+resultado_dia = []
+ultimo_resumo = time.time()
+
+# Organizamos os grupos em um dicionário para evitar repetição de código
+grupos = {
+    "FREE": {"moedas": MOEDAS_FREE, "chat_id": CHAT_ID_FREE, "ultimo_sinal": {}, "ultimo_preco": {}},
+    "V1": {"moedas": MOEDAS_V1, "chat_id": CHAT_ID_V1, "ultimo_sinal": {}, "ultimo_preco": {}},
+    "V2": {"moedas": MOEDAS_V2, "chat_id": CHAT_ID_V2, "ultimo_sinal": {}, "ultimo_preco": {}}
+}
+
+# Inicializa o histórico para todas as moedas de todos os grupos
+todas_as_moedas = set(list(MOEDAS_FREE.keys()) + list(MOEDAS_V1.keys()) + list(MOEDAS_V2.keys()))
+for coin in todas_as_moedas:
     historico[coin] = []
-    
-preco = get_price_kucoin(MAPA_KUCOIN[coin])
-if preco is None:
-    continue
+
+# --- 3. Funções de API e Utilitários ---
+
+def get_price(coin):
+    """Obtém preço via CoinGecko"""
     try:
         url = f"https://api.coingecko.com/api/v3/simple/price?ids={coin}&vs_currencies=usd"
-        data = requests.get(url).json()
+        response = requests.get(url, timeout=10)
+        data = response.json()
         return data[coin]["usd"]
-    except:
-        return None
-
-def get_price_kucoin(symbol):
-    try:
-        url = f"https://api.kucoin.com/api/v1/market/orderbook/level1?symbol={symbol}-USDT"
-        response = requests.get(url).json()
-        return float(response["data"]["price"])
-    except:
+    except Exception:
         return None
 
 def calcular_rsi(precos, periodo=14):
-    if len(precos) < periodo:
+    if len(precos) < periodo + 1:
         return None
-
     ganhos = []
     perdas = []
-
     for i in range(1, len(precos)):
         diff = precos[i] - precos[i-1]
-        if diff >= 0:
-            ganhos.append(diff)
-        else:
-            perdas.append(abs(diff))
-
-    media_ganho = sum(ganhos[-periodo:]) / periodo if ganhos else 0
-    media_perda = sum(perdas[-periodo:]) / periodo if perdas else 1
-
-    rs = media_ganho / media_perda
+        if diff >= 0: ganhos.append(diff)
+        else: perdas.append(abs(diff))
+    
+    avg_gain = sum(ganhos[-periodo:]) / periodo if ganhos else 0
+    avg_loss = sum(perdas[-periodo:]) / periodo if perdas else 1
+    if avg_loss == 0: return 100
+    rs = avg_gain / avg_loss
     return 100 - (100 / (1 + rs))
 
-def enviar_free(msg):
-        
-        url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-        requests.post(url, data={"chat_id": CHAT_ID_FREE, "text": msg})
-def enviar_v1(msg):
-        url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
-        requests.post(url, data={"chat_id": CHAT_ID_V1, "text": msg})
+def enviar_telegram(chat_id, msg):
+    if not TOKEN or not chat_id: return
+    url = f"https://api.telegram.org/bot{TOKEN}/sendMessage"
+    try:
+        requests.post(url, data={"chat_id": chat_id, "text": msg}, timeout=10)
+    except Exception as e:
+        print(f"Erro Telegram: {e}")
 
-enviar_free("🟢 Bot FREE reiniciado e funcionando")
-enviar_v1("🔒 VIP funcionando")
+# --- 4. Loop Principal ---
 
-def resumo_resultado():
-    if not resultado_dia:
-        return "📊 RESUMO DO DIA\n\nNenhuma operação fechada ainda."
-
-    total = sum(resultado_dia)
-    media = total / len(resultado_dia)
-
-    return (
-        "📊 RESUMO DO DIA\n\n"
-        f"Operações: {len(resultado_dia)}\n"
-        f"Resultado acumulado: {total:.2f}%\n"
-        f"Média por operação: {media:.2f}%\n\n"
-        "⚠️ Simulação baseada nos sinais do bot"
-    )
+print("🚀 Bot de Sinais Iniciado...")
+enviar_telegram(CHAT_ID_FREE, "🟢 Bot FREE funcionando")
+enviar_telegram(CHAT_ID_V1, "🔒 VIP V1 funcionando")
 
 while True:
     try:
-        print("Rodando...")
+        for nome_grupo, config in grupos.items():
+            if not config["chat_id"]: continue
 
-        for coin, simbolo in MOEDAS_FREE.items():
-            preco = get_price(coin)
+            print(f"Verificando {nome_grupo}...")
+            
+            for coin, simbolo in config["moedas"].items():
+                preco = get_price(coin)
+                if preco is None: continue
 
-            if preco is None:
-                continue
+                historico[coin].append(preco)
+                if len(historico[coin]) > 50: historico[coin].pop(0)
 
-            historico[coin].append(preco)
+                rsi = calcular_rsi(historico[coin])
+                if rsi is None: continue
 
-            if len(historico[coin]) > 50:
-                historico[coin].pop(0)
+                # Lógica de Sinais
+                ult_sinal = config["ultimo_sinal"].get(coin)
+                ult_preco = config["ultimo_preco"].get(coin)
 
-            rsi = calcular_rsi(historico[coin])
+                # Parâmetros específicos (V2 Scalping pode ter RSI mais agressivo)
+                alvo_rsi_compra = 30 if nome_grupo == "V2" else 35
+                alvo_rsi_venda = 70 if nome_grupo == "V2" else 60
 
-            if rsi is None:
-                continue
+                if rsi < alvo_rsi_compra and ult_sinal != "COMPRA":
+                    enviar_telegram(config["chat_id"], 
+                        f"🟢 COMPRA ({nome_grupo})\nMoeda: {simbolo}\nPreço: ${preco}\nRSI: {rsi:.2f}")
+                    config["ultimo_sinal"][coin] = "COMPRA"
+                    config["ultimo_preco"][coin] = preco
 
-            if rsi < 35:
-                if coin not in ultimo_sinal_free or ultimo_sinal_free[coin] != "COMPRA":
-                    enviar_free(
-                        f"🟢 COMPRA\n"
-                        f"Moeda: {simbolo}\n"
-                        f"Preço: ${preco}\n"
-                        f"RSI: {rsi:.2f}\n"
-                        f"📊 Sinal baseado no mercado global (COINGEKO)"
-                    )
-                    ultimo_sinal_free[coin] = "COMPRA"
-                    ultimo_preco_compra_free[coin] = preco
-                
-                    preco = get_price(coin)
-
-                    if preco is None:
-                        continue
-
-                    historico[coin].append(preco)
-
-                    if len(historico[coin]) > 50:
-                        historico[coin].pop(0)
-
-                    rsi = calcular_rsi(historico[coin])
-
-                    if rsi is None:
-                        continue
-
-                    
-                        
-            elif rsi > 60:
-                if coin in ultimo_preco_compra_free and preco >= ultimo_preco_compra_free[coin] * 1.01:
-                    if coin not in ultimo_sinal_free or ultimo_sinal_free[coin] != "VENDA":
-
-                        lucro = ((preco - ultimo_preco_compra_free[coin]) / ultimo_preco_compra_free[coin]) * 100
+                elif rsi > alvo_rsi_venda and ult_sinal == "COMPRA":
+                    if preco >= ult_preco * 1.01: # Alvo de 1% lucro
+                        lucro = ((preco - ult_preco) / ult_preco) * 100
                         resultado_dia.append(lucro)
+                        enviar_telegram(config["chat_id"], 
+                            f"🔴 VENDA ({nome_grupo})\nMoeda: {simbolo}\nPreço: ${preco}\nLucro: {lucro:.2f}%")
+                        config["ultimo_sinal"][coin] = "VENDA"
 
-                        enviar_free(
-                            f"🔴 VENDA\n"
-                            f"Moeda: {simbolo}\n"
-                            f"Preço: ${preco}\n"
-                            f"RSI: {rsi:.2f}"
-                        )
-                        ultimo_sinal_free[coin] = "VENDA"
-        for coin, simbolo in MOEDAS_V1.items():
-            preco = get_price(coin)
+        # Lógica de Resumo (Fora dos loops de moedas)
+        agora = time.time()
+        if agora - ultimo_resumo > 86400:
+            if resultado_dia:
+                total = sum(resultado_dia)
+                msg = f"📊 RESUMO DO DIA\n\nOperações: {len(resultado_dia)}\nResultado: {total:.2f}%"
+                enviar_telegram(CHAT_ID_FREE, msg)
+            resultado_dia.clear()
+            ultimo_resumo = agora
 
-            if preco is None:
-                continue
-
-            historico[coin].append(preco)
-
-            if len(historico[coin]) > 50:
-                historico[coin].pop(0)
-
-            rsi = calcular_rsi(historico[coin])
-
-            if rsi is None:
-                continue
-
-            if rsi < 35:
-                if coin not in ultimo_sinal_v1 or ultimo_sinal_v1[coin] != "COMPRA":
-                    enviar_v1(
-                        f"🟢 COMPRA\n"
-                        f"Moeda: {simbolo}\n"
-                        f"Preço: ${preco}\n"
-                        f"RSI: {rsi:.2f}\n"
-                        f"📊 Sinal baseado no mercado global (COINGEKO)"
-                    )
-                    ultimo_sinal_v1[coin] = "COMPRA"
-                    ultimo_preco_compra_v1[coin] = preco
-                
-                    preco = get_price(coin)
-
-                    if preco is None:
-                        continue
-
-                    historico[coin].append(preco)
-
-                    if len(historico[coin]) > 50:
-                        historico[coin].pop(0)
-
-                    rsi = calcular_rsi(historico[coin])
-
-                    if rsi is None:
-                        continue
-
-                    
-                        
-            elif rsi > 60:
-                if coin in ultimo_preco_compra_v1 and preco >= ultimo_preco_compra_v1[coin] * 1.01:
-                    if coin not in ultimo_sinal_v1 or ultimo_sinal_v1[coin] != "VENDA":
-
-                        lucro = ((preco - ultimo_preco_compra_v1[coin]) / ultimo_preco_compra_v1[coin]) * 100
-                        resultado_dia.append(lucro)
-
-                        enviar_v1(
-                            f"🔴 VENDA\n"
-                            f"Moeda: {simbolo}\n"
-                            f"Preço: ${preco}\n"
-                            f"RSI: {rsi:.2f}"
-                        )
-                        ultimo_sinal_v1[coin] = "VENDA"
-
-     
-            agora = time.time()
-
-            if agora - ultimo_resumo > 86400:  # 24 horas
-                mensagem = resumo_resultado()
-                enviar_free(mensagem)
-                resultado_dia.clear()
-                ultimo_resumo = agora
-                
-        time.sleep(300)
+        time.sleep(300) # Espera 5 minutos
 
     except Exception as e:
-        print("Erro:", e)
+        print(f"Erro: {e}")
         time.sleep(10)
